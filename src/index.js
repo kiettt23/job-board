@@ -6,7 +6,7 @@ import { getTheme } from "./theme/theme";
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(
-  <ThemeProvider theme={getTheme("light")}>
+  <ThemeProvider theme={getTheme("dark")}>
     <CssBaseline />
     <App />
   </ThemeProvider>

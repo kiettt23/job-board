@@ -7,9 +7,19 @@ import {
   Divider,
   Box,
 } from "@mui/material";
-import { Link as RouterLink } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 
 export default function JobCard({ job }) {
+  const location = useLocation();
+  const navigate = useNavigate();
+
+  const handleClick = () => {
+    // Điều hướng kèm state background
+    navigate(`/job/${job.id}`, {
+      state: { background: location, jobId: job.id },
+    });
+  };
+
   return (
     <Paper
       elevation={3}
@@ -54,8 +64,7 @@ export default function JobCard({ job }) {
 
       {/* Learn more → route detail */}
       <Button
-        component={RouterLink}
-        to={`/job/${job.id}`}
+        onClick={handleClick}
         variant="contained"
         color="primary"
         fullWidth

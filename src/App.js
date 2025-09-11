@@ -1,9 +1,10 @@
-import { createBrowserRouter, RouterProvider } from "react-router-dom";
+import { BrowserRouter, useLocation, useRoutes } from "react-router-dom";
 import Layout from "./components/Layout";
 import Jobs from "./pages/Jobs";
 import JobDetail from "./pages/JobDetail";
+import JobDetailModal from "./pages/JobDetailModal";
 
-const router = createBrowserRouter([
+const routes = [
   {
     path: "/",
     element: <Layout />,
@@ -12,8 +13,33 @@ const router = createBrowserRouter([
       { path: "job/:id", element: <JobDetail /> },
     ],
   },
-]);
+];
+
+function AppRoutes() {
+  const location = useLocation();
+  const state = location.state;
+
+  // Nếu có background → render routes dựa trên background, còn modal overlay sẽ render thêm
+  const element = useRoutes(routes, state?.background || location);
+
+  return (
+    <>
+      {element}
+      {state?.background && (
+        <JobDetailModal
+          id={state.jobId}
+          open
+          onClose={() => window.history.back()}
+        />
+      )}
+    </>
+  );
+}
 
 export default function App() {
-  return <RouterProvider router={router} />;
+  return (
+    <BrowserRouter>
+      <AppRoutes />
+    </BrowserRouter>
+  );
 }

@@ -1,60 +1,53 @@
 import { useEffect, useState } from "react";
-import Grid from "@mui/material/Grid";
+import Grid from "@mui/material/Grid"; // ✅ Grid v7
 import { Box, Button, Typography } from "@mui/material";
 import JobCard from "../components/JobCard";
 import api from "../app/apiService";
 
 export default function Jobs() {
-  // State quản lý dữ liệu và trạng thái
   const [jobs, setJobs] = useState([]); // danh sách job từ API
-  const [loading, setLoading] = useState(true); // trạng thái đang fetch
-  const [error, setError] = useState(null); // nếu fetch fail
-  const [page, setPage] = useState(1); // trang hiện tại
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+  const [page, setPage] = useState(1);
 
-  // Hàm fetch data từ API
   const fetchJobs = async (page) => {
     try {
-      setLoading(true); // bật loading khi bắt đầu fetch
-      setError(null); // reset error
+      setLoading(true);
+      setError(null);
       const res = await api.get("/jobs", {
-        params: { _page: page, _limit: 5 }, // server-side pagination
+        params: { _page: page, _limit: 5 },
       });
-      setJobs(res.data); // lưu data vào state
+      setJobs(res.data);
     } catch (err) {
       setError("Không thể tải dữ liệu. Thử lại sau.");
     } finally {
-      setLoading(false); // tắt loading
+      setLoading(false);
     }
   };
 
-  // Gọi fetchJobs khi component mount hoặc page thay đổi
   useEffect(() => {
     fetchJobs(page);
   }, [page]);
 
-  // Render UI
   return (
     <Box>
-      {/* Nếu đang loading */}
       {loading && <Typography>Đang tải dữ liệu...</Typography>}
 
-      {/* Nếu có lỗi */}
       {error && (
         <Typography color="error" sx={{ mb: 2 }}>
           {error}
         </Typography>
       )}
 
-      {/* Nếu có job data */}
+      {/* ✅ Grid v7 API */}
       <Grid container spacing={2} sx={{ mb: 3 }}>
         {jobs.map((job) => (
-          <Grid xs={12} sm={6} md={4} key={job.id}>
+          <Grid key={job.id} size={{ xs: 12, sm: 6, md: 4 }}>
             <JobCard job={job} />
           </Grid>
         ))}
       </Grid>
 
-      {/* Pagination buttons (demo, sau này sync URL ở Milestone 5) */}
       <Box sx={{ display: "flex", gap: 1, justifyContent: "center" }}>
         <Button
           variant="text"

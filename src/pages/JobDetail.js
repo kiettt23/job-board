@@ -1,4 +1,5 @@
 import { useParams, Link as RouterLink } from "react-router-dom";
+import { useEffect, useState } from "react";
 import {
   Box,
   Paper,
@@ -8,20 +9,56 @@ import {
   Button,
   Divider,
 } from "@mui/material";
-import jobs from "../data/jobs";
+import api from "../app/apiService";
 
 export default function JobDetail() {
-  const { id } = useParams();
-  const job = jobs.find((j) => j.id === id);
+  const { id } = useParams(); // lấy id từ URL
+  const [job, setJob] = useState(null);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+
+  useEffect(() => {
+    const fetchJob = async () => {
+      try {
+        setLoading(true);
+        setError(null);
+        const res = await api.get(`/jobs/${id}`);
+        setJob(res.data);
+      } catch (err) {
+        setError("Không tìm thấy job hoặc server lỗi");
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchJob();
+  }, [id]);
+
+  if (loading) {
+    return <Typography>Đang tải job...</Typography>;
+  }
+
+  if (error) {
+    return (
+      <Box>
+        <Typography variant="h6" color="error" gutterBottom>
+          {error}
+        </Typography>
+        <Button component={RouterLink} to="/" variant="contained">
+          Quay lại danh sách
+        </Button>
+      </Box>
+    );
+  }
 
   if (!job) {
     return (
       <Box>
         <Typography variant="h6" gutterBottom>
-          Job not found
+          Job không tồn tại
         </Typography>
         <Button component={RouterLink} to="/" variant="contained">
-          Back
+          Quay lại danh sách
         </Button>
       </Box>
     );
@@ -46,7 +83,7 @@ export default function JobDetail() {
       </Typography>
 
       <Button component={RouterLink} to="/" variant="contained" color="primary">
-        Back to list
+        Quay lại danh sách
       </Button>
     </Paper>
   );

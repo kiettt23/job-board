@@ -3,6 +3,7 @@ import Layout from "./components/Layout";
 import Jobs from "./pages/Jobs";
 import JobDetail from "./pages/JobDetail";
 import JobDetailModal from "./pages/JobDetailModal";
+import { AuthProvider } from "./app/AuthContext";
 
 const routes = [
   {
@@ -38,8 +39,10 @@ function AppRoutes() {
 
 export default function App() {
   return (
-    <BrowserRouter>
-      <AppRoutes />
-    </BrowserRouter>
+    <AuthProvider>
+      <BrowserRouter>
+        <AppRoutes />
+      </BrowserRouter>
+    </AuthProvider>
   );
 }

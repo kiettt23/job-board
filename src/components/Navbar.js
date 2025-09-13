@@ -1,33 +1,46 @@
-import { AppBar, Toolbar, Typography, Box, Button, Paper } from "@mui/material";
+import { AppBar, Toolbar, Typography, Button, Box } from "@mui/material";
+import { useAuth } from "../app/AuthContext";
+import { useState } from "react";
+import LoginModal from "./LoginModal";
 
 export default function Navbar() {
+  const { user, logout } = useAuth();
+  const [open, setOpen] = useState(false);
+
   return (
     <AppBar position="sticky" elevation={0}>
       <Toolbar sx={{ gap: 2 }}>
-        {/* Title left */}
-        <Typography variant="h6" sx={{ fontWeight: 700 }}>
-          Job Routing
+        <Typography variant="h6" sx={{ flexGrow: 1, fontWeight: 700 }}>
+          Job Board
         </Typography>
 
-        {/* Fake search box (Paper + Box) để bám đúng “What to Use” */}
-        <Paper
-          sx={{
-            ml: 2,
-            px: 2,
-            py: 0.75,
-            flexGrow: 1,
-            display: { xs: "none", sm: "block" },
-            opacity: 0.9,
-          }}
-        >
-          <Box sx={{ color: "text.secondary", fontSize: 14 }}>Search…</Box>
-        </Paper>
-
-        {/* Sign in (ẩn bớt trên mobile) */}
-        <Box sx={{ ml: "auto", display: { xs: "none", sm: "block" } }}>
-          <Button color="inherit">Sign in</Button>
-        </Box>
+        {user ? (
+          <Box sx={{ display: "flex", gap: 2, alignItems: "center" }}>
+            <Typography>{user.username}</Typography>
+            <Button
+              color="inherit"
+              onClick={() => {
+                console.log("👋 Logout button clicked");
+                logout();
+              }}
+            >
+              Logout
+            </Button>
+          </Box>
+        ) : (
+          <Button
+            color="inherit"
+            onClick={() => {
+              console.log("🔓 Open login modal");
+              setOpen(true);
+            }}
+          >
+            Sign In
+          </Button>
+        )}
       </Toolbar>
+
+      <LoginModal open={open} onClose={() => setOpen(false)} />
     </AppBar>
   );
 }

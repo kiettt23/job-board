@@ -1,8 +1,11 @@
 import axios from "axios";
-import config from "./config";
+import { AXIOS_CONFIG } from "./config";
 
-console.log("API_BASE from env:", process.env.REACT_APP_API_BASE);
-const api = axios.create(config);
-console.log("Axios instance baseURL:", api.defaults.baseURL);
+const api = axios.create(AXIOS_CONFIG);
+
+// Debug log (chỉ nên dùng lúc dev, có thể bỏ khi deploy)
+if (process.env.NODE_ENV === "development") {
+  console.log("Axios baseURL:", api.defaults.baseURL);
+}
 
 export default api;

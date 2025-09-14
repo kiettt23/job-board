@@ -1,9 +1,16 @@
-import { BrowserRouter, useLocation, useRoutes } from "react-router-dom";
+import {
+  BrowserRouter,
+  useLocation,
+  useRoutes,
+  Outlet,
+} from "react-router-dom";
 import Layout from "./components/Layout";
 import Jobs from "./pages/Jobs";
 import JobDetail from "./pages/JobDetail";
 import JobDetailModal from "./pages/JobDetailModal";
 import { AuthProvider } from "./app/AuthContext";
+import { useState } from "react";
+import LoginModal from "./components/LoginModal";
 
 const routes = [
   {
@@ -19,13 +26,18 @@ const routes = [
 function AppRoutes() {
   const location = useLocation();
   const state = location.state;
+  const [loginOpen, setLoginOpen] = useState(false); // ✅ quản lý login modal
 
   // Nếu có background → render routes dựa trên background, còn modal overlay sẽ render thêm
   const element = useRoutes(routes, state?.background || location);
 
   return (
     <>
+      {/* ✅ pass context cho các page */}
+      <Outlet context={{ setLoginOpen }} />
+
       {element}
+
       {state?.background && (
         <JobDetailModal
           id={state.jobId}
@@ -33,6 +45,9 @@ function AppRoutes() {
           onClose={() => window.history.back()}
         />
       )}
+
+      {/* ✅ login modal global */}
+      <LoginModal open={loginOpen} onClose={() => setLoginOpen(false)} />
     </>
   );
 }

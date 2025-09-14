@@ -1,11 +1,8 @@
 import { AppBar, Toolbar, Typography, Button, Box } from "@mui/material";
 import { useAuth } from "../app/AuthContext";
-import { useState } from "react";
-import LoginModal from "./LoginModal";
 
-export default function Navbar() {
+export default function Navbar({ onOpenLogin }) {
   const { user, logout } = useAuth();
-  const [open, setOpen] = useState(false);
 
   return (
     <AppBar position="sticky" elevation={0}>
@@ -32,15 +29,13 @@ export default function Navbar() {
             color="inherit"
             onClick={() => {
               console.log("🔓 Open login modal");
-              setOpen(true);
+              onOpenLogin(); // ✅ gọi từ Layout
             }}
           >
             Sign In
           </Button>
         )}
       </Toolbar>
-
-      <LoginModal open={open} onClose={() => setOpen(false)} />
     </AppBar>
   );
 }

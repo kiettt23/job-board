@@ -7,24 +7,23 @@ import {
   Divider,
   Box,
 } from "@mui/material";
-import { useLocation, useNavigate, useOutletContext } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import { useAuth } from "../app/AuthContext";
 
 export default function JobCard({ job }) {
   const location = useLocation();
   const navigate = useNavigate();
   const { user } = useAuth();
-  const { setLoginOpen } = useOutletContext(); // ✅ lấy từ Layout
 
   const handleClick = () => {
     if (user) {
-      // Nếu đã login → navigate mở JobDetailModal
+      // ✅ Nếu đã login → đi tới modal job detail
       navigate(`/job/${job.id}`, {
         state: { background: location, jobId: job.id },
       });
     } else {
-      // Nếu chưa login → bật modal login
-      setLoginOpen(true);
+      // ✅ Nếu chưa login → đi tới /login, kèm theo state.from
+      navigate("/login", { state: { from: location } });
     }
   };
 
@@ -53,7 +52,7 @@ export default function JobCard({ job }) {
 
       <Divider sx={{ mb: 1 }} />
 
-      {/* Description */}
+      {/* Description (clamp 3 lines) */}
       <Box sx={{ flexGrow: 1 }}>
         <Typography
           variant="body2"

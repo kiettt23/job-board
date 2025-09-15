@@ -1,16 +1,10 @@
-import {
-  BrowserRouter,
-  useLocation,
-  useRoutes,
-  Outlet,
-} from "react-router-dom";
+import { BrowserRouter, useLocation, useRoutes } from "react-router-dom";
 import Layout from "./components/Layout";
 import Jobs from "./pages/Jobs";
 import JobDetail from "./pages/JobDetail";
 import JobDetailModal from "./pages/JobDetailModal";
-import { AuthProvider } from "./app/AuthContext";
-import { useState } from "react";
 import LoginModal from "./components/LoginModal";
+import { AuthProvider } from "./app/AuthContext";
 
 const routes = [
   {
@@ -19,6 +13,7 @@ const routes = [
     children: [
       { index: true, element: <Jobs /> },
       { path: "job/:id", element: <JobDetail /> },
+      { path: "login", element: <LoginModal open /> }, // ✅ route login
     ],
   },
 ];
@@ -26,18 +21,14 @@ const routes = [
 function AppRoutes() {
   const location = useLocation();
   const state = location.state;
-  const [loginOpen, setLoginOpen] = useState(false); // ✅ quản lý login modal
 
-  // Nếu có background → render routes dựa trên background, còn modal overlay sẽ render thêm
   const element = useRoutes(routes, state?.background || location);
 
   return (
     <>
-      {/* ✅ pass context cho các page */}
-      <Outlet context={{ setLoginOpen }} />
-
       {element}
 
+      {/* Nếu có background → show JobDetailModal */}
       {state?.background && (
         <JobDetailModal
           id={state.jobId}
@@ -45,9 +36,6 @@ function AppRoutes() {
           onClose={() => window.history.back()}
         />
       )}
-
-      {/* ✅ login modal global */}
-      <LoginModal open={loginOpen} onClose={() => setLoginOpen(false)} />
     </>
   );
 }

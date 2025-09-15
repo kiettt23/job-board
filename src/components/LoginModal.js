@@ -8,28 +8,36 @@ import {
   Stack,
 } from "@mui/material";
 import { useAuth } from "../app/AuthContext";
+import { useLocation, useNavigate } from "react-router-dom";
 
-export default function LoginModal({ open, onClose }) {
+export default function LoginModal({ open = true }) {
   const { login } = useAuth();
+  const navigate = useNavigate();
+  const location = useLocation();
+
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
 
+  const from = location.state?.from?.pathname || "/"; // ✅ nơi cần redirect về
+
   const handleSubmit = () => {
-    console.log("📤 Submitting login:", { username, password });
     const ok = login(username, password);
     if (ok) {
-      console.log("🎉 Login modal closing (success)");
-      onClose();
+      navigate(from, { replace: true }); // ✅ login thành công → quay lại
     } else {
-      console.log("⚠️ Wrong credentials");
       setError("Sai username hoặc password");
     }
   };
 
   return (
-    <Modal open={open} onClose={onClose}>
+    <Modal open={open} onClose={() => navigate(-1)}>
       <Box
+        component="form"
+        onSubmit={(e) => {
+          e.preventDefault();
+          handleSubmit();
+        }}
         sx={{
           p: 3,
           bgcolor: "background.paper",
@@ -55,7 +63,7 @@ export default function LoginModal({ open, onClose }) {
             onChange={(e) => setPassword(e.target.value)}
           />
           {error && <Typography color="error">{error}</Typography>}
-          <Button variant="contained" onClick={handleSubmit}>
+          <Button variant="contained" type="submit">
             Login
           </Button>
         </Stack>

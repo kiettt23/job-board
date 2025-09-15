@@ -5,10 +5,9 @@
 export const API_BASE_URL =
   process.env.REACT_APP_API_BASE || "http://localhost:5000";
 
-// Axios config
+// Axios config (không set timeout → mặc định = 0, tức là không giới hạn)
 export const AXIOS_CONFIG = {
   baseURL: API_BASE_URL,
-  timeout: 5000, // Sau 5 giây không nhận được phản hồi → axios sẽ tự động reject với lỗi ECONNABORTED.
 };
 
 // Pagination

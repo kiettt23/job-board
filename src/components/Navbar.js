@@ -15,7 +15,7 @@ export default function Navbar({ searchTerm, setSearchTerm }) {
 
   return (
     <AppBar position="sticky" elevation={0}>
-      <Toolbar sx={{ gap: 2 }}>
+      <Toolbar sx={{ gap: 2, justifyContent: "space-around" }}>
         {/* Logo */}
         <Typography variant="h6" sx={{ fontWeight: 700 }}>
           Job Board

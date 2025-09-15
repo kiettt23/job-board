@@ -6,15 +6,20 @@ import LoginModal from "./LoginModal";
 
 export default function Layout() {
   const [loginOpen, setLoginOpen] = useState(false);
+  const [searchTerm, setSearchTerm] = useState(""); // ✅ search state
 
   return (
     <Box>
-      {/* Navbar gọi open login qua props */}
-      <Navbar onOpenLogin={() => setLoginOpen(true)} />
+      {/* Navbar có search bar */}
+      <Navbar
+        onOpenLogin={() => setLoginOpen(true)}
+        searchTerm={searchTerm}
+        setSearchTerm={setSearchTerm}
+      />
 
+      {/* Truyền searchTerm xuống các page qua Outlet context */}
       <Container sx={{ mt: 4, mb: 6 }}>
-        {/* Pass setLoginOpen xuống page con (Jobs → JobCard) */}
-        <Outlet context={{ setLoginOpen }} />
+        <Outlet context={{ setLoginOpen, searchTerm }} />
       </Container>
 
       {/* Login modal global */}

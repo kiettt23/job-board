@@ -70,7 +70,7 @@ Default endpoint:
 4. Start Command: `npm start`
 5. The API will be live at:
    ```
-   https://https://job-board-gjsx.onrender.com/jobs
+   https://job-board-gjsx.onrender.com/jobs
    ```
 
 ---

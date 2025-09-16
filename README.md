@@ -1,64 +1,89 @@
-# 📡 Job Board API (json-server)
+# Job Board API (Mock) 🚀
 
-Mock API cho dự án **Job Board**, chạy bằng [json-server](https://github.com/typicode/json-server).
+![json-server](https://img.shields.io/badge/json--server-v1.0-orange)
+![license](https://img.shields.io/badge/License-MIT-black)
+
+A lightweight mock **REST API** built with [json-server](https://github.com/typicode/json-server).  
+This backend provides job data for the **Job Board frontend** project.
+
+---
+
+## 📌 About
+
+- Serves job listings from `jobs.json`.
+- Used together with the frontend repo `job-board`.
+- Fast prototyping of APIs without building a full backend.
+
+---
+
+## ✨ Features
+
+- REST API endpoints for job data.
+- Supports pagination, filtering, and search (provided by json-server).
+- Easy to deploy on **Render** or run locally.
+
+---
+
+## 🛠 Tech Stack
+
+- **Backend**: json-server
+- **Language**: JavaScript (Node.js)
+- **Hosting**: Render (free tier)
 
 ---
 
 ## 📂 Project Structure
+
 ```
 job-board-api/
-├── jobs.json      # Data cho mock API
-├── package.json   # Config json-server
-└── README.md      # Tài liệu dự án
+ ├── jobs.json        # mock job data
+ ├── package.json     # dependencies + scripts
+ ├── README.md        # documentation
+ └── .gitignore
 ```
 
 ---
 
-## 🚀 Run locally
+## 🚀 Getting Started
 
-1. Cài dependency:
-   ```bash
-   npm install
-   ```
+```bash
+# Install dependencies
+npm install
 
-2. Chạy server:
-   ```bash
-   npm start
-   ```
-
-3. API mặc định chạy tại:
-   - [http://localhost:4000/jobs](http://localhost:4000/jobs)
-
----
-
-## 🌐 Deploy lên Render
-
-1. Push repo này lên GitHub.
-2. Truy cập [Render](https://render.com/) → **New Web Service**.
-3. Kết nối repo, chọn **Node**.
-4. Cấu hình:
-   - Build Command: `npm install`
-   - Start Command: `npm start`
-5. Sau khi deploy thành công, API public sẽ có link ví dụ:
-   ```
-   https://job-board-api.onrender.com/jobs
-   ```
-
----
-
-## 🔗 Kết nối với Frontend
-
-Trong repo **job-board (frontend)**, cập nhật file `.env`:
-
-```env
-# Khi chạy local
-REACT_APP_API_BASE=http://localhost:4000
-
-# Khi deploy Netlify
-REACT_APP_API_BASE=https://job-board-api.onrender.com
+# Run local server
+npm run dev
+# → http://localhost:4000/jobs
 ```
+
+Default endpoint:
+
+- `GET /jobs` → list all jobs
+- `GET /jobs/:id` → get job by id
+
+---
+
+## 📦 Deployment (Render)
+
+1. Create new **Web Service** on [Render](https://render.com).
+2. Connect this repo.
+3. Build Command: `npm install`
+4. Start Command: `npm start`
+5. The API will be live at:
+   ```
+   https://https://job-board-gjsx.onrender.com/jobs
+   ```
+
+---
+
+## 📅 Roadmap
+
+- [x] Provide jobs.json dataset
+- [x] Deploy on Render
+- [ ] Add more job fields (salary, posted date, company)
+- [ ] Support auth middleware (optional)
 
 ---
 
 ## 📜 License
-MIT
+
+MIT — see [LICENSE](./LICENSE).

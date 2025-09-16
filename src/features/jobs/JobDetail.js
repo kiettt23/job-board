@@ -1,3 +1,4 @@
+// -------------------- Imports --------------------
 import { useParams, Link as RouterLink } from "react-router-dom";
 import { useEffect, useState } from "react";
 import {
@@ -9,14 +10,18 @@ import {
   Button,
   Divider,
 } from "@mui/material";
-import api from "../app/apiService";
+import api from "../../app/api/apiService";
 
+// -------------------- Job Detail Page --------------------
 export default function JobDetail() {
-  const { id } = useParams(); // lấy id từ URL
+  const { id } = useParams();
+
+  // -------------------- State --------------------
   const [job, setJob] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
+  // -------------------- Effects --------------------
   useEffect(() => {
     const fetchJob = async () => {
       try {
@@ -24,19 +29,17 @@ export default function JobDetail() {
         setError(null);
         const res = await api.get(`/jobs/${id}`);
         setJob(res.data);
-      } catch (err) {
+      } catch {
         setError("Không tìm thấy job hoặc server lỗi");
       } finally {
         setLoading(false);
       }
     };
-
     fetchJob();
   }, [id]);
 
-  if (loading) {
-    return <Typography>Đang tải job...</Typography>;
-  }
+  // -------------------- Render --------------------
+  if (loading) return <Typography>Đang tải job...</Typography>;
 
   if (error) {
     return (

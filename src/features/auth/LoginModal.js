@@ -1,3 +1,4 @@
+// -------------------- Imports --------------------
 import { useState } from "react";
 import {
   Modal,
@@ -7,29 +8,31 @@ import {
   Typography,
   Stack,
 } from "@mui/material";
-import { useAuth } from "../app/AuthContext";
+import { useAuth } from "../../app/contexts/AuthContext";
 import { useLocation, useNavigate } from "react-router-dom";
 
+// -------------------- Login Modal --------------------
 export default function LoginModal({ open = true }) {
   const { login } = useAuth();
   const navigate = useNavigate();
   const location = useLocation();
 
+  // -------------------- State --------------------
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
 
-  const from = location.state?.from?.pathname || "/"; // ✅ nơi cần redirect về
+  // Redirect back to previous path (or home) after login
+  const from = location.state?.from?.pathname || "/";
 
+  // -------------------- Handlers --------------------
   const handleSubmit = () => {
     const ok = login(username, password);
-    if (ok) {
-      navigate(from, { replace: true }); // ✅ login thành công → quay lại
-    } else {
-      setError("Sai username hoặc password");
-    }
+    if (ok) navigate(from, { replace: true });
+    else setError("Sai username hoặc password");
   };
 
+  // -------------------- Render --------------------
   return (
     <Modal open={open} onClose={() => navigate(-1)}>
       <Box
@@ -41,7 +44,7 @@ export default function LoginModal({ open = true }) {
         sx={{
           p: 3,
           bgcolor: "background.paper",
-          width: 300,
+          width: 320,
           mx: "auto",
           mt: "20vh",
           borderRadius: 2,

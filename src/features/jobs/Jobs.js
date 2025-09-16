@@ -1,12 +1,15 @@
+// -------------------- Imports --------------------
 import { useEffect, useState } from "react";
 import { useOutletContext } from "react-router-dom";
 import Grid from "@mui/material/Grid";
 import { Box, Button, Typography } from "@mui/material";
-import JobCard from "../components/JobCard";
-import api from "../app/apiService";
-import { JOBS_PER_PAGE } from "../app/config";
+import JobCard from "../../components/JobCard";
+import api from "../../app/api/apiService";
+import { JOBS_PER_PAGE } from "../../app/constants";
 
+// -------------------- Jobs Page --------------------
 export default function Jobs() {
+  // -------------------- State --------------------
   const { searchTerm } = useOutletContext();
   const [allJobs, setAllJobs] = useState([]);
   const [filteredJobs, setFilteredJobs] = useState([]);
@@ -15,33 +18,35 @@ export default function Jobs() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
+  // -------------------- Derived Values --------------------
   const totalPages = Math.ceil(filteredJobs.length / JOBS_PER_PAGE);
 
-  // fetch toàn bộ job 1 lần
-  const fetchAllJobs = async () => {
-    try {
-      setLoading(true);
-      setError(null);
-
-      const res = await api.get("/jobs");
-      setAllJobs(res.data);
-      setFilteredJobs(res.data);
-      setJobs(res.data.slice(0, JOBS_PER_PAGE));
-    } catch (err) {
-      console.error("❌ Fetch error:", err);
-      setError("Không thể tải dữ liệu. Thử lại sau.");
-    } finally {
-      setLoading(false);
-    }
-  };
-
+  // -------------------- Effects --------------------
   useEffect(() => {
+    const fetchAllJobs = async () => {
+      try {
+        setLoading(true);
+        setError(null);
+        const res = await api.get("/jobs");
+        setAllJobs(res.data);
+        setFilteredJobs(res.data);
+        setJobs(res.data.slice(0, JOBS_PER_PAGE));
+      } catch (err) {
+        if (process.env.NODE_ENV === "development") {
+          // eslint-disable-next-line no-console
+          console.error("Fetch jobs error:", err);
+        }
+        setError("Không thể tải dữ liệu. Thử lại sau.");
+      } finally {
+        setLoading(false);
+      }
+    };
+
     fetchAllJobs();
   }, []);
 
-  // khi searchTerm thay đổi → filter lại
   useEffect(() => {
-    if (searchTerm.trim() === "") {
+    if (!searchTerm.trim()) {
       setFilteredJobs(allJobs);
     } else {
       const term = searchTerm.toLowerCase();
@@ -56,7 +61,6 @@ export default function Jobs() {
     setPage(1);
   }, [searchTerm, allJobs]);
 
-  // khi page hoặc filteredJobs thay đổi → slice lại data
   useEffect(() => {
     if (filteredJobs.length > 0) {
       const start = (page - 1) * JOBS_PER_PAGE;
@@ -67,6 +71,7 @@ export default function Jobs() {
     }
   }, [page, filteredJobs]);
 
+  // -------------------- Render --------------------
   return (
     <Box>
       <Typography variant="h4" sx={{ mb: 2 }}>
@@ -91,9 +96,9 @@ export default function Jobs() {
         )}
       </Grid>
 
-      {/* Pagination */}
       {totalPages > 1 && (
         <Box sx={{ display: "flex", gap: 1, justifyContent: "center" }}>
+          {/* Prev */}
           <Button
             variant="text"
             disabled={page === 1}
@@ -102,6 +107,7 @@ export default function Jobs() {
             &lt;
           </Button>
 
+          {/* Pages */}
           {Array.from({ length: totalPages }, (_, i) => i + 1)
             .filter(
               (p) =>
@@ -110,7 +116,6 @@ export default function Jobs() {
             .map((p, idx, arr) => {
               const prev = arr[idx - 1];
               const showDots = prev && p - prev > 1;
-
               return (
                 <Box key={p} sx={{ display: "flex", alignItems: "center" }}>
                   {showDots && <Typography sx={{ mx: 1 }}>...</Typography>}
@@ -124,6 +129,7 @@ export default function Jobs() {
               );
             })}
 
+          {/* Next */}
           <Button
             variant="text"
             disabled={page === totalPages}

@@ -1,3 +1,4 @@
+// -------------------- Imports --------------------
 import {
   Paper,
   Typography,
@@ -8,25 +9,28 @@ import {
   Box,
 } from "@mui/material";
 import { useLocation, useNavigate } from "react-router-dom";
-import { useAuth } from "../app/AuthContext";
+import { useAuth } from "../app/contexts/AuthContext";
 
+// -------------------- JobCard Component --------------------
 export default function JobCard({ job }) {
   const location = useLocation();
   const navigate = useNavigate();
   const { user } = useAuth();
 
+  // -------------------- Handlers --------------------
   const handleClick = () => {
     if (user) {
-      // ✅ Nếu đã login → đi tới modal job detail
+      // Logged in → open job detail modal
       navigate(`/job/${job.id}`, {
         state: { background: location, jobId: job.id },
       });
     } else {
-      // ✅ Nếu chưa login → đi tới /login, kèm theo state.from
+      // Not logged in → redirect to /login with "from"
       navigate("/login", { state: { from: location } });
     }
   };
 
+  // -------------------- Render --------------------
   return (
     <Paper
       elevation={3}
@@ -43,7 +47,7 @@ export default function JobCard({ job }) {
         {job.title}
       </Typography>
 
-      {/* Skills (max 4) */}
+      {/* Skills */}
       <Stack direction="row" spacing={1} flexWrap="wrap" mb={1}>
         {job.skills.slice(0, 4).map((skill) => (
           <Chip key={skill} label={skill} size="small" />
@@ -52,11 +56,12 @@ export default function JobCard({ job }) {
 
       <Divider sx={{ mb: 1 }} />
 
-      {/* Description (clamp 3 lines) */}
+      {/* Short description (clamped) */}
       <Box sx={{ flexGrow: 1 }}>
         <Typography
           variant="body2"
           color="text.secondary"
+          title={job.description}
           sx={{
             display: "-webkit-box",
             WebkitLineClamp: 3,
@@ -69,7 +74,7 @@ export default function JobCard({ job }) {
         </Typography>
       </Box>
 
-      {/* Learn more → route detail */}
+      {/* Action */}
       <Button
         onClick={handleClick}
         variant="contained"

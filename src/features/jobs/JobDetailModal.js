@@ -1,3 +1,4 @@
+// -------------------- Imports --------------------
 import { useEffect, useState } from "react";
 import {
   Modal,
@@ -8,13 +9,16 @@ import {
   Divider,
   CircularProgress,
 } from "@mui/material";
-import api from "../app/apiService";
+import api from "../../app/api/apiService";
 
+// -------------------- Job Detail Modal --------------------
 export default function JobDetailModal({ id, open, onClose }) {
+  // -------------------- State --------------------
   const [job, setJob] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
+  // -------------------- Effects --------------------
   useEffect(() => {
     if (!id) {
       setError("Thiếu ID job");
@@ -22,27 +26,20 @@ export default function JobDetailModal({ id, open, onClose }) {
       return;
     }
 
-    console.log("Modal received id:", id);
-
     setLoading(true);
     setError(null);
 
     api
       .get(`/jobs/${encodeURIComponent(id)}`)
-      .then((res) => {
-        console.log("API response:", res.data);
-        setJob(res.data);
-      })
-      .catch((err) => {
-        console.error("API error:", err);
+      .then((res) => setJob(res.data))
+      .catch(() => {
         setError("Không tìm thấy job hoặc server lỗi");
         setJob(null);
       })
-      .finally(() => {
-        setLoading(false);
-      });
+      .finally(() => setLoading(false));
   }, [id]);
 
+  // -------------------- Render --------------------
   return (
     <Modal open={open} onClose={onClose}>
       <Box

@@ -1,11 +1,19 @@
+// -------------------- Imports --------------------
 import { BrowserRouter, useLocation, useRoutes } from "react-router-dom";
-import Layout from "./components/Layout";
-import Jobs from "./pages/Jobs";
-import JobDetail from "./pages/JobDetail";
-import JobDetailModal from "./pages/JobDetailModal";
-import LoginModal from "./components/LoginModal";
-import { AuthProvider } from "./app/AuthContext";
 
+// Layout & shared UI
+import Layout from "./components/Layout";
+
+// Feature screens
+import Jobs from "./features/jobs/Jobs";
+import JobDetail from "./features/jobs/JobDetail";
+import JobDetailModal from "./features/jobs/JobDetailModal";
+import LoginModal from "./features/auth/LoginModal";
+
+// Global context
+import { AuthProvider } from "./app/contexts/AuthContext";
+
+// -------------------- Routes Definition --------------------
 const routes = [
   {
     path: "/",
@@ -13,22 +21,23 @@ const routes = [
     children: [
       { index: true, element: <Jobs /> },
       { path: "job/:id", element: <JobDetail /> },
-      { path: "login", element: <LoginModal open /> }, // ✅ route login
+      { path: "login", element: <LoginModal open /> }, // login via route
     ],
   },
 ];
 
+// -------------------- Router Wrapper --------------------
 function AppRoutes() {
   const location = useLocation();
   const state = location.state;
 
+  // Background routing: when opening a job from the list, keep the list as background
   const element = useRoutes(routes, state?.background || location);
 
   return (
     <>
       {element}
 
-      {/* Nếu có background → show JobDetailModal */}
       {state?.background && (
         <JobDetailModal
           id={state.jobId}
@@ -40,6 +49,7 @@ function AppRoutes() {
   );
 }
 
+// -------------------- App Root --------------------
 export default function App() {
   return (
     <AuthProvider>

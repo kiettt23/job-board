@@ -4,122 +4,140 @@
 ![stack](https://img.shields.io/badge/Stack-React%20%7C%20MUI%20v7%20%7C%20Router%20v7-blue)
 ![license](https://img.shields.io/badge/License-MIT-black)
 
-A responsive **Job Board** web app built with **React + MUI v7 + React Router v7**.  
-👉 **Live demo:** [https://jobboard-app.netlify.app/](https://jobboard-app.netlify.app/)
+A responsive **Job Board** web app built with **React + MUI v7 + React Router v7**.
 
-The app simulates a job board:
-
-- Fetch jobs from a mock API (`json-server`) instead of static data.
-- Display 5 jobs per page with pagination.
-- Responsive grid layout (1 col mobile, 2 col tablet, 3 col desktop).
-- Dark theme by default.
-- **Job detail modal overlay** with background routing.
+> This project simulates a job board to practice React Router advanced patterns and MUI UI building:
+>
+> - Modal routing with background location
+> - Fake authentication and redirect flow
+> - Search + pagination UX
 
 ---
 
-## Highlights
+## 📌 About
 
-- Data fetching with **axios** from json-server.
-- Responsive **navigation bar** (desktop & mobile).
-- Functional **Grid v7 API** (no deprecation warnings).
-- Error/loading states handled gracefully.
-- Modal overlay job detail (background location).
+The Job Board allows users to browse job listings, search by keyword, and view job details in a modal overlay. Authentication is implemented with a fake login flow (`admin/demo123`). The project demonstrates a professional **feature-based architecture** suitable for scaling and portfolio presentation.
 
 ---
 
-## Screenshot
+## ✨ Features
 
-![screenshot](public/screenshot.png)
-
----
-
-## What I learned
-
-- How to set up **MUI v7 theme overrides** for dark mode.
-- Using **Paper, AppBar, Box, Button, Chip, Divider, Grid v7 API**.
-- Fetching API with **axios** and handling loading/error state.
-- How to structure a React app with **Layout + Outlet (React Router v7)**.
-- Implementing **modal routing** with `location.state.background`.
+- Fetch jobs from mock API (`json-server` hosted on Render).
+- Job list with **pagination** (5 per page).
+- **Authentication**: fake login (`admin/demo123`).
+- If unauthenticated → clicking a job opens **LoginModal** (via route).
+- **Login route `/login`** with redirect back to the previous page.
+- **Search bar in Navbar** to filter jobs by title/description.
+- **Job detail modal overlay** using background routing.
+- Custom **dark theme** with MUI overrides.
+- Responsive grid layout (mobile → desktop).
 
 ---
 
-## Project structure
+## 🖼️ Screenshot
+
+![Job Board Screenshot](./public/screenshot.png)
+
+---
+
+## 🛠 Tech Stack
+
+- **Frontend**: React 19, React Router v7, MUI v7
+- **Backend (mock)**: json-server
+- **HTTP Client**: axios
+- **Deploy**: Netlify (frontend) + Render (mock API)
+
+---
+
+## 📂 Project Structure (Feature-based)
 
 ```
-/ # project root
-├── src/
-│ ├── components/
-│ │ ├── Navbar.js
-│ │ ├── Layout.js
-│ │ └── JobCard.js
-│ ├── pages/
-│ │ ├── Jobs.js           # Job list + pagination (API)
-│ │ ├── JobDetail.js      # Fallback full page detail
-│ │ └── JobDetailModal.js # Modal overlay detail
-│ ├── app/
-│ │ ├── apiService.js     # axios instance
-│ │ └── config.js         # axios config
-│ ├── theme/
-│ │ └── theme.js          # Dark theme + overrides
-│ ├── App.js
-│ └── index.js
-├── jobs.json             # Mock API data (served by json-server)
-├── public/
-│ └── screenshot.png
-├── package.json
-├── README.md
-└── LICENSE
+src/
+ ├── app/
+ │   ├── api/
+ │   │   ├── apiService.js     # axios instance
+ │   │   └── axiosConfig.js    # axios baseURL config
+ │   ├── contexts/
+ │   │   └── AuthContext.js    # global authentication context
+ │   ├── constants.js          # global constants (e.g. JOBS_PER_PAGE)
+ │   └── theme.js              # MUI theme config
+ ├── features/
+ │   ├── jobs/
+ │   │   ├── Jobs.js
+ │   │   ├── JobDetail.js
+ │   │   └── JobDetailModal.js
+ │   └── auth/
+ │       └── LoginModal.js
+ ├── components/
+ │   ├── Navbar.js
+ │   ├── Layout.js
+ │   └── JobCard.js
+ ├── App.js
+ └── index.js
 ```
 
 ---
 
-## Run locally
+## 🚀 Getting Started
 
-1. Clone repo:
+```bash
+# Clone repo
+git clone https://github.com/kiettt23/job-board.git
+cd job-board
 
-   ```bash
-   git clone https://github.com/kiettt23/job-board.git
-   cd job-board
-   ```
+# Install deps
+npm install
 
-2. Install deps:
+# Start mock API
+npm run dev:api
+# → http://localhost:4000/jobs
 
-   ```bash
-   npm install
-   ```
+# Start React app
+npm start
+# → http://localhost:3000
+```
 
-3. Start mock API:
+**Login credentials**
 
-   ```bash
-   npm run dev:api
-   ```
-
-   → runs at [http://localhost:4000/jobs](http://localhost:4000/jobs)
-
-4. Start React app:
-   ```bash
-   npm start
-   ```
-   → runs at [http://localhost:3000](http://localhost:3000)
+- Username: `admin`
+- Password: `demo123`
 
 ---
 
-## Roadmap
+## 📅 Roadmap
 
-- [x] Setup json-server + axios for API
-- [x] Fetch jobs with pagination (5 per page)
-- [x] Job detail modal overlay with background location
-- [ ] Authentication (AuthContext + Login Modal)
-- [ ] Functional pagination sync with URL `?page=2`
-- [ ] Search/filter jobs (title/skills)
-- [ ] Dark/light theme toggle
-- [ ] Improve JobDetail page (city, salary, postedDate)
-- [ ] Polish UI (hover states, spacing, clamp text, icons)
-- [ ] Deploy CI/CD pipeline
-- [ ] Unit tests (Jest + RTL)
+### ✅ Completed
+
+- v0.1.0: Job list + detail modal (API)
+- v0.2.0: Pagination + AuthContext
+- v0.2.1: Global login modal
+- v0.3.0: Search job (title/description)
+- v0.3.1: Move search bar to Navbar
+- v0.4.0: Map LoginModal to `/login` route + redirect flow
+- v0.4.x: UI polish (Navbar alignment)
+
+### 🔜 Planned
+
+- v0.5.0: **Server-side pagination** with `/jobs?_page=&_limit=`
+- v0.6.0: Dark/light theme toggle
+- v0.7.0: Improve JobDetail (city, salary, postedDate)
+- v0.8.0: CI/CD pipeline (Netlify + Render)
+- v0.9.0: Unit tests (Jest + RTL)
 
 ---
 
-## License
+## 📝 Working Rules
+
+- **Architecture**: feature-based for scalability and clarity.
+- **Code style**: sectioned comments (`// -------------------- State --------------------`) to improve readability.
+- **Workflow**: setup → code → debug → deploy.
+- **Commit**: follow convention (`feat`, `fix`, `refactor`, `docs`, `style`, `chore`).
+- **Debug**: read logs, isolate bug, understand before using AI.
+- **Docs**: README clear, with setup & demo link.
+- **Repo**: clean (gitignore, no junk files).
+
+---
+
+## 📜 License
 
 MIT — see [LICENSE](./LICENSE).

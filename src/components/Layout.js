@@ -1,29 +1,24 @@
+// -------------------- Imports --------------------
 import { Outlet } from "react-router-dom";
 import Navbar from "./Navbar";
 import { Container, Box } from "@mui/material";
 import { useState } from "react";
-import LoginModal from "./LoginModal";
 
+// -------------------- Layout Component --------------------
 export default function Layout() {
-  const [loginOpen, setLoginOpen] = useState(false);
-  const [searchTerm, setSearchTerm] = useState(""); // ✅ search state
+  // -------------------- State --------------------
+  const [searchTerm, setSearchTerm] = useState("");
 
+  // -------------------- Render --------------------
   return (
     <Box>
-      {/* Navbar có search bar */}
-      <Navbar
-        onOpenLogin={() => setLoginOpen(true)}
-        searchTerm={searchTerm}
-        setSearchTerm={setSearchTerm}
-      />
+      {/* Global navbar with search + auth */}
+      <Navbar searchTerm={searchTerm} setSearchTerm={setSearchTerm} />
 
-      {/* Truyền searchTerm xuống các page qua Outlet context */}
-      <Container sx={{ mt: 4, mb: 6 }}>
-        <Outlet context={{ setLoginOpen, searchTerm }} />
+      {/* Page content, aligned with Navbar edges via Container */}
+      <Container maxWidth="lg" sx={{ mt: 4, mb: 6 }}>
+        <Outlet context={{ searchTerm }} />
       </Container>
-
-      {/* Login modal global */}
-      <LoginModal open={loginOpen} onClose={() => setLoginOpen(false)} />
     </Box>
   );
 }

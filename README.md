@@ -16,7 +16,9 @@ A responsive **Job Board** web app built with **React + MUI v7 + React Router v7
 
 ## 📌 About
 
-The Job Board allows users to browse job listings, search by keyword, and view job details in a modal overlay. Authentication is implemented with a fake login flow (`admin/demo123`). The project demonstrates a professional **feature-based architecture** suitable for scaling and portfolio presentation.
+This project has reached **v1.0.0 stable release** 🎉.  
+It includes a feature-based architecture, authentication (fake login), job listings with pagination, search, and modal routing.  
+Backend powered by **json-server** (Render) and frontend deployed on **Netlify**.
 
 ---
 
@@ -114,15 +116,15 @@ npm start
 - v0.3.0: Search job (title/description)
 - v0.3.1: Move search bar to Navbar
 - v0.4.0: Map LoginModal to `/login` route + redirect flow
-- v0.4.x: UI polish (Navbar alignment)
+- v1.0.0: **Stable release** with feature-based architecture, auth, search, and modal routing
 
 ### 🔜 Planned
 
-- v0.5.0: **Server-side pagination** with `/jobs?_page=&_limit=`
-- v0.6.0: Dark/light theme toggle
-- v0.7.0: Improve JobDetail (city, salary, postedDate)
-- v0.8.0: CI/CD pipeline (Netlify + Render)
-- v0.9.0: Unit tests (Jest + RTL)
+- v1.1.0: **Server-side pagination** with `/jobs?_page=&_limit=`
+- v1.2.0: Dark/light theme toggle
+- v1.3.0: Improve JobDetail (city, salary, postedDate)
+- v1.4.0: CI/CD pipeline (Netlify + Render)
+- v1.5.0: Unit tests (Jest + RTL)
 
 ---
 
